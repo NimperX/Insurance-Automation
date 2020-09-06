@@ -81,20 +81,19 @@ def claimStatus(request):
             'Balance': [user_data.Balance],
             'Any_Opened_Complaints': [user_data.Any_Opened_Complaints],
             'Marital_Status': [user_data.Marital_Status],
-            'Number_of_Insurance_Types': [user_data.Num_of_Insurance_Types],
+            'Num_of_Insurance_Types': [user_data.Num_of_Insurance_Types],
             'Is_Active': [user_data.Is_Active],
             'Estimated_Salary': [user_data.Estimated_Salary]
         })
-        churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_15082020'))
-        #churn_status = classification_predict(estimator=churn_pred_model, data=churn_data)['Label'].to_list()[0]
-        churn_status = 0  #Remove this line to remove override
+        churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_06092020'))
+        churn_status = classification_predict(estimator=churn_pred_model, data=churn_data)['Label'].to_list()[0]
 
         context = {
             'claim_id': claim_data.Row_ID,
             'vehicle_model': ' '.join([claim_data.Blind_Make, claim_data.Blind_Model, str(claim_data.Model_Year)]),
             'damaged_comp': pred_component[claim_data.Damage_Component],
             'claim_amount': claim_data.Claim_Amount,
-            'churn_status': True if churn_status==1 else False
+            'churn_status': True if churn_status=='Yes' else False
         }
 
         return render(request, 'claim_pred.html', context)
@@ -201,11 +200,11 @@ def accidentClaim(request):
                     #Model for claim regression
                     claim_pred_model_reg = regression_load(join(Path(__file__).resolve(strict=True).parent,'models\\lr_model_23122019'))
                     predict_data.insert(33,'Claim_Amount_Label',[1],True)
-                    claim_amount = regression_predict(estimator=claim_pred_model_reg, data=predict_data)['Label'].to_list()[0]
+                    #claim_amount = regression_predict(estimator=claim_pred_model_reg, data=predict_data)['Label'].to_list()[0]
                     claim_amount = 5000  #Remove this line to remove override
 
                 churn_data = DataFrame(data={
-                    'Household_ID': [user_data.Household],
+                    'Household_ID': [user_data.Household.Household_ID],
                     'First_Name': [user_data.First_Name],
                     'Last_Name': [user_data.Last_Name],
                     'Gender': [user_data.Gender],
@@ -217,13 +216,12 @@ def accidentClaim(request):
                     'Balance': [user_data.Balance],
                     'Any_Opened_Complaints': [user_data.Any_Opened_Complaints],
                     'Marital_Status': [user_data.Marital_Status],
-                    'Number_of_Insurance_Types': [user_data.Num_of_Insurance_Types],
+                    'Num_of_Insurance_Types': [user_data.Num_of_Insurance_Types],
                     'Is_Active': [user_data.Is_Active],
                     'Estimated_Salary': [user_data.Estimated_Salary]
                 })
-                churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_15082020'))
-                #churn_status = classification_predict(estimator=churn_pred_model, data=churn_data)['Label'].to_list()[0]
-                churn_status = 0  #Remove this line to remove override
+                churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_06092020'))
+                churn_status = classification_predict(estimator=churn_pred_model, data=churn_data)['Label'].to_list()[0]
 
                 newClaimData = ClaimData(
                     Household = claim_data.Household,
@@ -268,7 +266,7 @@ def accidentClaim(request):
                     'vehicle_model': ' '.join(pred_vehicle[pred_vehicle_model].split('/')[:-1]),
                     'damaged_comp': pred_component[pred_name],
                     'claim_amount': claim_amount,
-                    'churn_status': True if churn_status==1 else False
+                    'churn_status': True if churn_status=='Yes' else False
                 }
 
                 return render(request, 'claim_pred.html', context)
