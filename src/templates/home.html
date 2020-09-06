@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} | Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <div class="body-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="float-right text-white mt-4 mr-2">Hi {{ user.userdata.First_Name }}!</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a class="btn btn-danger btn-sm float-right mr-2" href="{% url 'logout' %}">logout</a>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="padding-top:30vh;">
+      <div class="row">
+        <div class="col-md-8 offset-md-2 mb-4">
+          <a href="{% url 'update_user' %}" class="btn btn-success btn-lg btn-block">Edit Profile</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2 mb-4">
+          <a href="{% url 'accident_claim' %}" class="btn btn-info btn-lg btn-block">Accident Claim</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2 mb-4">
+          <a href="{% url 'claim_status' %}" class="btn btn-danger btn-lg btn-block">Claim Status</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2 mb-4">
+          <a href class="btn btn-warning btn-lg btn-block">Contact Us</a>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="body-bg"></div>
+{% endif %}
+{% endblock %}
+
+{% block styles %}
+<style>
+  .body-container{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    z-index:1;
+  }
+
+  .body-bg{
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static 'bg_menu.jpg' %}');
+    filter: blur(10px);
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:0;
+    width:100vw;
+    height:100vh;
+  }
+</style>
+{% endblock styles %}

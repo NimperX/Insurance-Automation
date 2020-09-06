@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} | Claim Process Finished{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <div class="body-container">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        {% if churn_status %}
+                            <h3>Affliated repair center discount of 20% awarded.</h3>
+                            <h3>Contact Agent Sam at 07xxxxxxxx</h3>
+                        {% else %}
+                            <h3>For further processing contact Agent Sam at 07xxxxxxxx</h3>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <a href="{% url 'home' %}" class="btn btn-primary btn-block">Back to home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="body-bg"></div>
+{% endif %}
+{% endblock %}
+
+{% block styles %}
+<style>
+  .body-container{
+        width:100vw;
+        padding-top:100px;
+        height:100vh;
+        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'bg_login.jpg' %}');
+        background-repeat: no-repeat;
+        background-size:cover;
+    }
+</style>
+{% endblock styles %}

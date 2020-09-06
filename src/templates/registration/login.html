@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} | Login{% endblock %}
+
+{% block content %}
+<div class="body-container">
+    <div class="container" style="padding-top:30vh;">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ form.non_field_errors }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <input type="username" name="{{ form.username.name }}" placeholder="Email address" class="form-control" id="{{ form.username.id_for_label }}" aria-describedby="usernameError">
+                                {% comment %} {{ form.username }} {% endcomment %}
+                                <small id="usernameError" class="form-text text-danger">{{ form.username.errors }}</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="{{ form.password.name }}" placeholder="Password" class="form-control" id="{{ form.password.id_for_label }}">
+                                {% comment %} {{ form.password }} {% endcomment %}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .body-container{
+        width:100vw;
+        height:100vh;
+        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'bg_login.jpg' %}');
+    }
+</style>
+{% endblock styles %}

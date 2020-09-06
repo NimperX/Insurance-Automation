@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} | Claim Prediction{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <div class="body-container">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="offset-md-2 col-md-4">
+                        <strong>Claim ID:</strong>
+                    </div>
+                    <div class="col-md-4">
+                        {{ claim_id }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-2 col-md-4">
+                        <strong>Vehicle:</strong>
+                    </div>
+                    <div class="col-md-4">
+                        {{ vehicle_model }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-2 col-md-4">
+                        <strong>Damaged area:</strong>
+                    </div>
+                    <div class="col-md-4">
+                        {{ damaged_comp }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-2 col-md-4">
+                        <strong>Claim amount:</strong>
+                    </div>
+                    <div class="col-md-4">
+                        Rs.{{ claim_amount }}.00
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {% if churn_status %}You get 20% discount for repairing at any authorised repair center{% endif %}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <a href="{% url 'claim_success' %}{% if churn_status %}?churn=1{% else %}?churn=0{% endif %}" class="btn btn-primary btn-block">Continue</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="body-bg"></div>
+{% endif %}
+{% endblock %}
+
+{% block styles %}
+<style>
+  .body-container{
+        width:100vw;
+        padding-top:100px;
+        height:100vh;
+        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'bg_login.jpg' %}');
+        background-repeat: no-repeat;
+        background-size:cover;
+    }
+</style>
+{% endblock styles %}
