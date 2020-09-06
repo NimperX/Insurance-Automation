@@ -11,7 +11,7 @@ Insurance automation system for customers using maching learning approches. This
 
 Install python 3.8 in pc. It comes with `pip` already installed.
 
-1. Create new folder to store project
+1. Clone this Repo
 1. Open folder in command line(Shell in linux) using `cd` command.
 1. Run `pip install virtualenv`.
 1. Run `virtualenv -p python .` (If `python3` is the command to run python 3.x then `virtualenv -p python3 .` )
