@@ -19,6 +19,9 @@ Install python 3.8 in pc. It comes with `pip` already installed.
 1. `pip install -r requirements.txt`
 1. Run `cd src`
 1. Run `python manage.py makemigrations` and `python manage.py migrate` accordingly.
+1. Download **DB Browser for SQLite** and install in computer.
+1. Open db.sqlite3 file inside **DB Browser for SQLite**.
+1. import data from _test.sql_ to db.sqlite3 and write changes to the database.
 
 ## Run server
 
