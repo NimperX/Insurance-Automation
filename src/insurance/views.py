@@ -20,6 +20,12 @@ from pycaret.classification import load_model as classification_load
 from pycaret.regression import predict_model as regression_predict
 from pycaret.regression import load_model as regression_load
 from datetime import datetime
+from torchvision import transforms, models
+import torch
+import torch.nn as nn
+from skimage import io, transform
+from PIL import Image
+
 
 
 def home(request):
@@ -69,7 +75,7 @@ def claimStatus(request):
         pred_component = {'H':'Head-light','R':'Rear mirror','T':'Tail-light','G':'Window','W': 'Windshield','D': 'Door'}
 
         churn_data = DataFrame(data={
-            'Household_ID': [user_data.Household],
+            'Household_ID': [user_data.Household.Household_ID],
             'First_Name': [user_data.First_Name],
             'Last_Name': [user_data.Last_Name],
             'Gender': [user_data.Gender],
@@ -85,7 +91,7 @@ def claimStatus(request):
             'Is_Active': [user_data.Is_Active],
             'Estimated_Salary': [user_data.Estimated_Salary]
         })
-        churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_06092020'))
+        churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_11092020'))
         churn_status = classification_predict(estimator=churn_pred_model, data=churn_data)['Label'].to_list()[0]
 
         context = {
@@ -111,32 +117,76 @@ def accidentClaim(request):
                 img_path_vehicle = data.vehicle_image
 
                 # Vehicle classification model
-                vehiclemodel_model=load_model(join(Path(__file__).resolve(strict=True).parent,'models\\vehicle_makemodel.hdf5'))
-                img = image.load_img(join(settings.MEDIA_DIR,str(img_path_vehicle)), target_size=(299, 299))
-                x = image.img_to_array(img)
-                x = np.expand_dims(x, axis=0)
-                x = preprocess_input(x)
+                # vehiclemodel_model=load_model(join(Path(__file__).resolve(strict=True).parent,'models\\vehicle_makemodel.hdf5'))
+                # img = image.load_img(join(settings.MEDIA_DIR,str(img_path_vehicle)), target_size=(299, 299))
+                # x = image.img_to_array(img)
+                # x = np.expand_dims(x, axis=0)
+                # x = preprocess_input(x)
 
-                preds = vehiclemodel_model.predict(x)
-                pred_vehicle_model = np.argmax(preds)
+                # preds = vehiclemodel_model.predict(x)
+                # pred_vehicle_model = np.argmax(preds)
+                # pred_vehicle = {
+                #     1:'Honda/Civic/2011/Car',
+                #     2:'Toyota/Axio/2015/Car',
+                #     3:'Toyota/Aqua/2019/Car',
+                #     4:'Suzuki/Wragon R Stingray/2018/Car',
+                #     5:'Audi/A8/2020/Car',
+                #     6:'SsangYong/Actyon/2008/SUV',
+                #     7:'Land Rover/Defender/2020/SUV',
+                #     8:'Toyota/Land Cruiser Prado/2018/SUV',
+                #     9:'Mitsubishi/Pajero/2018/SUV',
+                #     10:'Range Rover/Autobiography/2020/SUV',
+                #     11:'Honda/Vezel/2015/SUV',
+                #     12:'Honda/Fit GP5/2015/Car',
+                #     13:'Nissan/X-Trail Hybrid/2019/SUV',
+                #     14:'Suzuki/Swift RS/2019/Car',
+                #     15:'Toyota/Vitz/2019/Car'
+                # }
+                # print(pred_vehicle[pred_vehicle_model])
+
+                batch_size = 4
+                model_file_name = join(Path(__file__).resolve(strict=True).parent,'models\\vehicle_make_model_type_detection.pth')
+
+                mean = [ 0.485, 0.456, 0.406 ]
+                std = [ 0.229, 0.224, 0.225 ]
+
+                transform = transforms.Compose([transforms.Resize(256),
+                                                transforms.CenterCrop(224),
+                                                transforms.ToTensor(),
+                                                transforms.Normalize(mean = mean, std = std),])
+
+                test = []
+                img_dir = join(settings.MEDIA_DIR,str(img_path_vehicle))
+                label = -1
+                test.append([img_dir, label])
+
+                test_loader = torch.utils.data.DataLoader(test, batch_size = batch_size, shuffle = False)
+
+                number_of_classes = 11
+                model = models.resnet18(pretrained=True)
+                num_ftrs = model.fc.in_features
+                model.fc = nn.Linear(num_ftrs, number_of_classes)
+                device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+                model = model.to(device)
+                if torch.cuda.is_available():
+                    model.load_state_dict(torch.load(model_file_name))
+                else:
+                    model.load_state_dict(torch.load(model_file_name, map_location=device))
+
+                pred_vehicle_model = sample_tester(model, test_loader, transform = transform)
                 pred_vehicle = {
-                    1:'Honda/Civic/2011/Car',
-                    2:'Toyota/Axio/2015/Car',
-                    3:'Toyota/Aqua/2019/Car',
-                    4:'Suzuki/Wragon R Stingray/2018/Car',
-                    5:'Audi/A8/2020/Car',
-                    6:'SsangYong/Actyon/2008/SUV',
-                    7:'Land Rover/Defender/2020/SUV',
-                    8:'Toyota/Land Cruiser Prado/2018/SUV',
-                    9:'Mitsubishi/Pajero/2018/SUV',
-                    10:'Range Rover/Autobiography/2020/SUV',
-                    11:'Honda/Vezel/2015/SUV',
-                    12:'Honda/Fit GP5/2015/Car',
-                    13:'Nissan/X-Trail Hybrid/2019/SUV',
-                    14:'Suzuki/Swift RS/2019/Car',
-                    15:'Toyota/Vitz/2019/Car'
+                    'Audi A8 2020 Car': 'Audi/A8/2020/Car',
+                    'Honda Civic 2011 Car': 'Honda/Civic/2011/Car',
+                    'Honda Fit GP5 2015 Car': 'Honda/Fit GP5/2015/Car',
+                    'Honda Vezel 2015 SUV': 'Honda/Vezel/2015/SUV',
+                    'landcuiser predo 2018': 'Toyota/Land Cruiser Prado/2018/SUV',
+                    'Nissan X -Trail Hybrid 2019 SUV': 'Nissan/X-Trail Hybrid/2019/SUV',
+                    'Suzuki Wragon R Stingray 2018 Car': 'Suzuki/Wragon R Stingray/2018/Car',
+                    'Suzuzki Swift RS 2019 Car': 'Suzuki/Swift RS/2019/Car',
+                    'Toyota Aqua 2019 Car': 'Toyota/Aqua/2019/Car',
+                    'Toyota Axio 2015 Car': 'Toyota/Axio/2015/Car',
+                    'Toyota Vitz 2019 Car': 'Toyota/Vitz/2019/Car'
                 }
-                print(pred_vehicle[pred_vehicle_model])
                 
                 # Damage classification model
                 damage_model=load_model(join(Path(__file__).resolve(strict=True).parent,'models\\model_resnet50_num.hdf5'))
@@ -153,7 +203,7 @@ def accidentClaim(request):
                 #Must Add Dictionary {'Head-light':0,'Rear mirror':1,'Tail-light':2,'Window':3, 'Windshield':4, 'Door':5}
 
                 #Model for claim classification
-                claim_pred_model_classi = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\lr_model_23122019'))
+                claim_pred_model_classi = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\Pycaret2.1.1_Final_Blend1_Classification'))
 
                 user_data = UserData.objects.filter(Household=request.user.Household_ID).first()
                 claim_data = ClaimData.objects.filter(Household=request.user.Household_ID).first()
@@ -198,10 +248,10 @@ def accidentClaim(request):
                 
                 if claim_status==1:
                     #Model for claim regression
-                    claim_pred_model_reg = regression_load(join(Path(__file__).resolve(strict=True).parent,'models\\lr_model_23122019'))
+                    claim_pred_model_reg = regression_load(join(Path(__file__).resolve(strict=True).parent,'models\\Pycaret2.1.2_Regression_Final'))
                     predict_data.insert(33,'Claim_Amount_Label',[1],True)
-                    #claim_amount = regression_predict(estimator=claim_pred_model_reg, data=predict_data)['Label'].to_list()[0]
-                    claim_amount = 5000  #Remove this line to remove override
+                    claim_amount = regression_predict(estimator=claim_pred_model_reg, data=predict_data)['Label'].to_list()[0]
+                    claim_amount = float("{:.2f}".format(claim_amount))
 
                 churn_data = DataFrame(data={
                     'Household_ID': [user_data.Household.Household_ID],
@@ -220,7 +270,7 @@ def accidentClaim(request):
                     'Is_Active': [user_data.Is_Active],
                     'Estimated_Salary': [user_data.Estimated_Salary]
                 })
-                churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_06092020'))
+                churn_pred_model = classification_load(join(Path(__file__).resolve(strict=True).parent,'models\\deployment_11092020'))
                 churn_status = classification_predict(estimator=churn_pred_model, data=churn_data)['Label'].to_list()[0]
 
                 newClaimData = ClaimData(
@@ -276,3 +326,30 @@ def accidentClaim(request):
             'form': form
         }
         return render(request, 'acc_claim.html', context)
+
+
+
+def read_load_inputs_labels(image_names, labels, transform = None):
+	img_inputs = []
+	for i in range(len(image_names)):
+		image = io.imread(image_names[i])
+		if transform:
+			image = transform(Image.fromarray(image))
+		img_inputs.append(image)
+	inputs = torch.stack(img_inputs)
+	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+	inputs = inputs.to(device)
+	labels = labels.to(device)
+	return inputs, labels
+
+
+def sample_tester(model, test_loader, transform = None):
+	model.eval()
+	label_name_list = ['Audi A8 2020 Car', 'Honda Civic 2011 Car', 'Honda Fit GP5 2015 Car', 'Honda Vezel 2015 SUV', 'landcuiser predo 2018', 'Nissan X -Trail Hybrid 2019 SUV', 'Suzuki Wragon R Stingray 2018 Car', 'Suzuzki Swift RS 2019 Car', 'Toyota Aqua 2019 Car', 'Toyota Axio 2015 Car', 'Toyota Vitz 2019 Car']
+	for image_names, labels in test_loader:
+		with torch.no_grad():
+			inputs, labels = read_load_inputs_labels(image_names, labels, transform = transform)
+			outputs = model(inputs)
+			_, preds = torch.max(outputs, 1)
+			for k in range(preds.size(0)):
+				return label_name_list[preds[k]]
