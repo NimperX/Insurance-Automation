@@ -34,6 +34,9 @@ def home(request):
 
     return render(request, 'home.html')
 
+def contactUs(request):
+    return render(request, 'contact.html')
+
 def updateUser(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -115,34 +118,6 @@ def accidentClaim(request):
                 data = AccidentClaim.objects.latest('id')
                 img_path_damaged = data.damaged_image
                 img_path_vehicle = data.vehicle_image
-
-                # Vehicle classification model
-                # vehiclemodel_model=load_model(join(Path(__file__).resolve(strict=True).parent,'models\\vehicle_makemodel.hdf5'))
-                # img = image.load_img(join(settings.MEDIA_DIR,str(img_path_vehicle)), target_size=(299, 299))
-                # x = image.img_to_array(img)
-                # x = np.expand_dims(x, axis=0)
-                # x = preprocess_input(x)
-
-                # preds = vehiclemodel_model.predict(x)
-                # pred_vehicle_model = np.argmax(preds)
-                # pred_vehicle = {
-                #     1:'Honda/Civic/2011/Car',
-                #     2:'Toyota/Axio/2015/Car',
-                #     3:'Toyota/Aqua/2019/Car',
-                #     4:'Suzuki/Wragon R Stingray/2018/Car',
-                #     5:'Audi/A8/2020/Car',
-                #     6:'SsangYong/Actyon/2008/SUV',
-                #     7:'Land Rover/Defender/2020/SUV',
-                #     8:'Toyota/Land Cruiser Prado/2018/SUV',
-                #     9:'Mitsubishi/Pajero/2018/SUV',
-                #     10:'Range Rover/Autobiography/2020/SUV',
-                #     11:'Honda/Vezel/2015/SUV',
-                #     12:'Honda/Fit GP5/2015/Car',
-                #     13:'Nissan/X-Trail Hybrid/2019/SUV',
-                #     14:'Suzuki/Swift RS/2019/Car',
-                #     15:'Toyota/Vitz/2019/Car'
-                # }
-                # print(pred_vehicle[pred_vehicle_model])
 
                 batch_size = 4
                 model_file_name = join(Path(__file__).resolve(strict=True).parent,'models\\vehicle_make_model_type_detection.pth')

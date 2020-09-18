@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import home, updateUser, accidentClaim, claimSuccess, claimStatus
+from .views import home, updateUser, accidentClaim, claimSuccess, claimStatus, contactUs
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/accident/claim', accidentClaim, name='accident_claim'),
     path('accounts/claim/success', claimSuccess, name='claim_success'),
     path('accounts/claim/status', claimStatus, name='claim_status'),
+    path('accounts/contactus', contactUs, name='contactus'),
     path('', home, name='home'),
 ]
 
