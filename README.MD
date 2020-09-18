@@ -17,6 +17,7 @@ Install python 3.8 in pc. It comes with `pip` already installed.
 1. Run `virtualenv -p python .` (If `python3` is the command to run python 3.x then `virtualenv -p python3 .` )
 1. Activate virtual environment using `Scripts\activate` (In linux `source bin/activate`)
 1. `pip install -r requirements.txt`
+1. Run `pip install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html`
 1. Run `cd src`
 1. Run `python manage.py makemigrations` and `python manage.py migrate` accordingly.
 1. Download **DB Browser for SQLite** and install in computer.
