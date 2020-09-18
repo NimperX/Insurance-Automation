@@ -22,6 +22,7 @@ Install python 3.8 in pc. It comes with `pip` already installed.
 1. Download **DB Browser for SQLite** and install in computer.
 1. Open db.sqlite3 file inside **DB Browser for SQLite**.
 1. import data from _test.sql_ to db.sqlite3 and write changes to the database.
+1. Download all the models from following link and extract into src\insurance\models
 
 ## Run server
 
