@@ -1,0 +1,30 @@
+# created by virtualenv automatically
+#Exclude everything
+/*
+#Include src folder and requirements file
+!/src/
+!/requirements.txt
+!/README.MD
+!/.gitignore
+
+#exclude every pycache folder
+/src/**/__pycache__/
+
+#Exclude everything in migrations folders except __init_.py
+/src/**/migrations/*
+!/src/**/migrations/__init__.py
+
+#Exclude db file
+/src/db.sqlite3
+
+#Exclude ML models to save space
+/src/**/models/*
+!/src/**/models/.keep
+
+#Exclude media files
+/src/media/images/
+
+#Include every keep folders
+
+
+
