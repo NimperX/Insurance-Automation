@@ -24,7 +24,8 @@
 #Exclude media files
 /src/media/images/damaged/*
 /src/media/images/vehicle/*
-!/src/media/images/**/.gitkeep
+!/src/media/images/damaged/.gitkeep
+!/src/media/images/vehicle/.gitkeep
 
 #Include every keep folders
 
