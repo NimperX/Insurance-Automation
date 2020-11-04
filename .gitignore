@@ -22,7 +22,9 @@
 !/src/**/models/.keep
 
 #Exclude media files
-/src/media/images/
+/src/media/images/damaged/*
+/src/media/images/vehicle/*
+!/src/media/images/**/.gitkeep
 
 #Include every keep folders
 
