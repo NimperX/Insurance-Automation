@@ -1,0 +1,156 @@
+.custom-card {
+    height: auto;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.custom-card.login {
+    height: 430px !important;
+}
+
+.custom-card .card-body {
+    padding: 40px;
+}
+
+.custom-input {
+    border-radius: 0;
+    border: none;
+    padding: 20px;
+}
+
+.custom-input:focus {
+    box-shadow: none;
+}
+
+.btn {
+    border-radius: 0;
+    background: #181c2a;
+    transition: all 0.2s ease-in;
+    height: 40px;
+}
+
+.btn:hover {
+    background: #1e39b4;
+}
+
+.logo-text {
+    font-family: 'Sonsie One', cursive;
+    font-size: 60px;
+}
+
+.navbar .logo-text {
+    font-size: 40px;
+    color: #212529;
+}
+
+.box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px 30px;
+    min-height: 300px;
+    transition: all 0.1s ease-in;
+}
+
+.box:hover {
+    scale: 1.05;
+}
+
+.box i {
+    font-size: 70px;
+}
+
+.box h4 {
+    font-weight: 600;
+}
+
+.body-container>.container-fluid {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.navbar {
+    position: fixed;
+    width: 100vw;
+    background: #fff;
+    top: 0;
+    z-index: 1000;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.profile-card p {
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.profile-card a {
+    font-size: 16px;
+    margin-bottom: 0;
+    text-decoration: none;
+}
+
+.profile-card h5 {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.profile-card .image {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e39b4;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.profile-card .col {
+    padding-right: 0;
+}
+
+.main-menu {
+    color: #212529;
+    text-decoration: none;
+}
+
+.main-menu:hover {
+    color: #1e39b4;
+    text-decoration: none;
+}
+
+@media(max-width:575px) {
+    .body-container {
+        align-items: normal !important;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        height: inherit !important;
+    }
+    .box {
+        min-height: 250px !important;
+    }
+    .profile-card .image {
+        width: 50px;
+        height: 50px;
+    }
+    .profile-card a {
+        font-size: 14px;
+    }
+    .profile-card p {
+        font-size: 12px;
+    }
+    .profile-card h5 {
+        font-size: 16px;
+    }
+    .navbar .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .navbar .logo-text {
+        font-size: 30px;
+    }
+    .body-container>.container-fluid {
+        padding-top: 80px;
+    }
+}

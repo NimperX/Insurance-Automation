@@ -1,0 +1,25 @@
+<div class="navbar navbar-fixed-top navbar-custom ">
+    <div class="container-fluid" >
+      <div class="navbar-header navbar-right">
+        <a class="navbar-brand" href="{% url 'home' %}"><span class="navbar-logo"><div class="logo-text text-center mb-3">IMS</div></span></a>
+      </div>
+      <div class="navbar-left">
+        <div class="navbar-brand">
+          <div class="profile-card">
+            <div class="row">
+              <div class="col text-right">
+                <h5>{{ user.userdata.First_Name }} {{ user.userdata.Last_Name }}</h5>
+                <p>{{ user.userdata.Email }}</p>
+                <p><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></p>
+              </div>
+              <div class="col">
+                <div class="image">
+                  {{ user.userdata.First_Name|make_list|first }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

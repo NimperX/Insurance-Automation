@@ -5,67 +5,76 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  <div class="body-container">
+{% include 'navbar.html' with user=user %}
+
+  <div class="body-container d-flex justify-content-center align-items-center">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-12">
-          <h3 class="float-right text-white mt-4 mr-2">Hi {{ user.userdata.First_Name }}!</h3>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <a href="{% url 'update_user' %}" class="main-menu">
+            <div class="box mb-4 mt-1">
+              <div class="row">
+                <div class="col text-center">
+                  <i class="fas fa-user-tie"></i>
+                  <h4 class="h4 mt-3">Edit Profile</h4>
+                  <p>Update user data in the system.</p>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <a class="btn btn-danger btn-sm float-right mr-2" href="{% url 'logout' %}">logout</a>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <a href="{% url 'accident_claim' %}" class="main-menu">
+            <div class="box mb-4 mt-1">
+              <div class="row">
+                <div class="col text-center">
+                  <i class="fas fa-car-crash"></i>
+                  <h4 class="h4 mt-3">Accident Claim</h4>
+                  <p>Claim your insurance here.</p>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
-      </div>
-    </div>
-    <div class="container" style="padding-top:30vh;">
-      <div class="row">
-        <div class="col-md-8 offset-md-2 mb-4">
-          <a href="{% url 'update_user' %}" class="btn btn-success btn-lg btn-block">Edit Profile</a>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <a href="{% url 'claim_status' %}" class="main-menu">
+            <div class="box mb-4 mt-1">
+              <div class="row">
+                <div class="col text-center">
+                  <i class="far fa-clipboard"></i>
+                  <h4 class="h4 mt-3">Claim Status</h4>
+                  <p>Your last claim record can be viewd here</p>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-2 mb-4">
-          <a href="{% url 'accident_claim' %}" class="btn btn-info btn-lg btn-block">Accident Claim</a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-2 mb-4">
-          <a href="{% url 'claim_status' %}" class="btn btn-danger btn-lg btn-block">Claim Status</a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-2 mb-4">
-          <a href="{% url 'contactus' %}" class="btn btn-warning btn-lg btn-block">Contact Us</a>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <a href="{% url 'contactus' %}" class="main-menu">
+          <div class="box mb-4 mt-1">
+            <div class="row">
+              <div class="col text-center">
+                <i class="far fa-envelope"></i>
+                <h4 class="h4 mt-3">Conatct</h4>
+                <p>Do you need anything to clarify? Just put a hello in a email.</p>
+              </div>
+            </div>
+          </div>
+        </a>
         </div>
       </div>
     </div>
 </div>
-<div class="body-bg"></div>
 {% endif %}
 {% endblock %}
 
 {% block styles %}
 <style>
   .body-container{
-    position: fixed;
-    top:0;
-    left:0;
-    width:100vw;
-    height:100vh;
-    z-index:1;
-  }
-
-  .body-bg{
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static 'bg_menu.jpg' %}');
-    filter: blur(10px);
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static 'car-bg1.jpg' %}');
     background-repeat: no-repeat;
     background-size: cover;
-    position: fixed;
-    top:0;
-    left:0;
-    z-index:0;
-    width:100vw;
+    background-attachment: fixed;
     height:100vh;
   }
 </style>

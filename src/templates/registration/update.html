@@ -4,11 +4,13 @@
 {% block title %} | Update profile{% endblock %}
 
 {% block content %}
+{% include 'navbar.html' with user=user %}
+
 <div class="body-container">
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-md-1">
-                <div class="card">
+                <div class="card custom-card">
                     <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
@@ -63,12 +65,12 @@
 {% block styles %}
 <style>
     .body-container{
-        width:100vw;
-        padding-top:100px;
+        padding-top:200px;
         padding-bottom:100px;
-        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'bg_login.jpg' %}');
+        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'car-bg1.jpg' %}');
         background-repeat: no-repeat;
         background-size:cover;
+        background-attachment: fixed;
     }
 </style>
 {% endblock styles %}

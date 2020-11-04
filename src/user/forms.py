@@ -15,14 +15,8 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('username','password')
 
         widgets = {
-            'username': forms.TextInput(attrs={'class':'form-control'}),
-            # 'firstname': forms.TextInput(attrs={'class':'form-control'}),
-            # 'lastname': forms.TextInput(attrs={'class':'form-control'}),
-            # 'contact_no': forms.TextInput(attrs={'class':'form-control'}),
-            # 'credit_source': forms.Textarea(attrs={'class':'form-control'}),
-            # 'salary': forms.TextInput(attrs={'class':'form-control'}),
-            # 'marital_status': forms.RadioSelect(choices=((True, 'Yes'),(False, 'No'))),
-            'password': forms.TextInput(attrs={'class':'form-control'})
+            'username': forms.TextInput(attrs={'class':'form-control custom-input'}),
+            'password': forms.TextInput(attrs={'class':'form-control custom-input'})
         }
 
 class UserDataForm(forms.ModelForm):
@@ -31,11 +25,11 @@ class UserDataForm(forms.ModelForm):
         model = UserData
         fields = ('First_Name','Last_Name','Gender','Age','Email','Contact_Number','Marital_Status',)
         widgets = {
-            'First_Name': forms.TextInput(attrs={'class':'form-control'}),
-            'Last_Name': forms.TextInput(attrs={'class':'form-control'}),
+            'First_Name': forms.TextInput(attrs={'class':'form-control custom-input'}),
+            'Last_Name': forms.TextInput(attrs={'class':'form-control custom-input'}),
             'Gender': forms.RadioSelect(choices=(('Male', 'Male'),('Female', 'Female'))),
-            'Age': forms.NumberInput(attrs={'class':'form-control'}),
-            'Email': forms.TextInput(attrs={'class':'form-control'}),
-            'Contact_Number': forms.TextInput(attrs={'class':'form-control'}),
+            'Age': forms.NumberInput(attrs={'class':'form-control custom-input'}),
+            'Email': forms.TextInput(attrs={'class':'form-control custom-input'}),
+            'Contact_Number': forms.TextInput(attrs={'class':'form-control custom-input'}),
             'Marital_Status': forms.RadioSelect(choices=(('Married', 'Married'),('Unmarried', 'Unmarried'))),
         }

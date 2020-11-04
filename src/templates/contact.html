@@ -5,9 +5,11 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+{% include 'navbar.html' with user=user %}
+
   <div class="body-container">
     <div class="container">
-        <div class="card">
+        <div class="card custom-card">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
@@ -42,10 +44,9 @@
 {% block styles %}
 <style>
   .body-container{
-        width:100vw;
-        padding-top:100px;
-        height:100vh;
-        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'bg_login.jpg' %}');
+        padding-top:200px;
+        height:100vh !important;
+        background-image:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('{% static 'car-bg.jpg' %}');
         background-repeat: no-repeat;
         background-size:cover;
     }
